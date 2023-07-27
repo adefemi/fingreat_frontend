@@ -4,7 +4,7 @@ Welcome to the frontend of the 'FinGreat' fintech application. This part of the 
 
 ## Getting Started
 
-Before starting, make sure you have Node.js and npm installed on your machine.
+Before starting, make sure you have Node.js and npm or yarn installed on your machine.
 
 ### Clone the repository
 
