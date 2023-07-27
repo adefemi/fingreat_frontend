@@ -20,7 +20,7 @@ This command clones the repository into a new directory called "fingreat-fronten
 cd fingreat-frontend
 ```
 
-### Clone the repository
+### Install Dependencies
 
 To install the necessary dependencies for this project, run:
 
