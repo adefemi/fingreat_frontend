@@ -1,34 +1,35 @@
 "use client";
 
-import Auth from "@/components/Auth";
+import Auth from "@/app/components/Auth";
 import { authUrl } from "@/utils/network";
-import axios, { AxiosError } from "axios";
 import { FormEvent, useState } from "react";
 import { toast } from "react-toastify";
-import {useRouter} from "next/navigation";
-import { errorHandler } from "@/utils/errorHandler";
-import withoutAuth from "@/components/hoc/withoutAuth";
+import { useRouter } from "next/navigation";
+import withoutAuth from "@/app/components/hoc/withoutAuth";
+import axiosHandler from "@/utils/axiosHandler";
 
 const Register = () => {
-  const [loading, SetLoading] = useState(false);
-  const Router = useRouter()
+  const [loading, setLoading] = useState(false);
+  const Router = useRouter();
 
   const onSubmit = async (
     e: FormEvent<HTMLFormElement>,
     formRef: React.RefObject<HTMLFormElement>
   ) => {
     e.preventDefault();
-    SetLoading(true);
+    setLoading(true);
     let arg = {
       email: formRef.current?.email.value,
       password: formRef.current?.password.value,
     };
-    const response = await axios
-      .post(authUrl.register, arg)
-      .catch((e: AxiosError) => errorHandler(e));
-    SetLoading(false);
+    const res = await axiosHandler({
+      method: "POST",
+      url: authUrl.register,
+      data: arg,
+    });
+    setLoading(false);
 
-    if (response) {
+    if (res.response) {
       toast("User created successfully", {
         type: "success",
       });
