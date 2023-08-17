@@ -1,12 +1,13 @@
 "use client";
 
-import Auth from "@/components/Auth";
+import Auth from "@/app/components/Auth";
 import { authUrl } from "@/utils/network";
 import axios, { AxiosError } from "axios";
 import { FormEvent, useState } from "react";
 import { toast } from "react-toastify";
 import {useRouter} from "next/navigation";
 import { errorHandler } from "@/utils/errorHandler";
+import withoutAuth from "../components/hocs/withoutAuth";
 
 const Register = () => {
   const [loading, SetLoading] = useState(false);
@@ -50,4 +51,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default withoutAuth(Register);

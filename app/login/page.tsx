@@ -1,16 +1,23 @@
 "use client";
 
-import Auth from "@/components/Auth";
+import Auth from "@/app/components/Auth";
+import { userTokenKey } from "@/utils/contants";
 import { errorHandler } from "@/utils/errorHandler";
 import { authUrl } from "@/utils/network";
-import axios, { AxiosError } from "axios";
-import { useRouter } from "next/navigation";
+import axios, { AxiosError, AxiosResponse } from "axios";
 import { FormEvent, useState } from "react";
-import { toast } from "react-toastify";
+import {useRouter} from "next/navigation"
+import withoutAuth from "../components/hocs/withoutAuth";
+import useAxiosHandler from "@/utils/axiosHandler";
+
+interface LoginType {
+  token: string
+}
 
 const Login = () => {
   const [loading, SetLoading] = useState(false);
   const Router = useRouter()
+  const {axiosHandler} = useAxiosHandler()
 
   const onSubmit = async (
     e: FormEvent<HTMLFormElement>,
@@ -22,12 +29,17 @@ const Login = () => {
       email: formRef.current?.email.value,
       password: formRef.current?.password.value,
     };
-    const response = await axios
-      .post(authUrl.login, arg)
-      .catch((e: AxiosError) => errorHandler(e));
+
+    const response = await axiosHandler<LoginType>({
+      method: "POST",
+      url: authUrl.login,
+      data: arg
+    })
+
     SetLoading(false);
 
-    if (response) {
+    if (response.data) {
+      localStorage.setItem(userTokenKey, response.data.token)
       Router.push("/");
     }
   };
@@ -35,4 +47,4 @@ const Login = () => {
   return <Auth loading={loading} showRemembered onSubmit={onSubmit} />;
 };
 
-export default Login;
+export default withoutAuth(Login);

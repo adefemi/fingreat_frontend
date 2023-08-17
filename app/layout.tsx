@@ -1,24 +1,27 @@
-import type { Metadata } from 'next'
-import {ToastContainer} from "react-toastify"
-import 'react-toastify/dist/ReactToastify.css';
-import "./main.css"
+import type { Metadata } from "next"
+import "react-toastify/dist/ReactToastify.css";
+import "./main.css";
+import StoreProvider from "./components/StoreProvider";
+import ToastLayout from "./components/ToastLayout";
 
 export const metadata: Metadata = {
-  title: 'Fingreat - Financial App',
-  description: 'Fingreat - Financial App',
-}
+  title: "Fingreat - Financial App",
+  description: "Fingreat - Financial App",
+};
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
     <html lang="en">
-      <body>
-        {children}
-        <ToastContainer />
-      </body>
+      <StoreProvider>
+        <body>
+          {children}
+          <ToastLayout />
+        </body>
+      </StoreProvider>
     </html>
-  )
+  );
 }
