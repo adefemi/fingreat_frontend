@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { useModal } from "./hooks/useModal";
 import AddAccount from "./AddAccount";
 import SendMoney from "./SendMoney";
+import AddMoney from "./AddMoney";
 
 export interface AccountType {
   id: string;
@@ -15,7 +16,8 @@ export interface AccountType {
 
 enum ModalState {
   AddAccount = "AddAccount",
-  SendMoney = "SendMoney"
+  SendMoney = "SendMoney",
+  AddMoney = "AddMoney"
 }
 
 const Accounts = () => {
@@ -55,9 +57,15 @@ const Accounts = () => {
     showModal()
   }
 
+  const addMoney = () => {
+    setModalState(ModalState.AddMoney)
+    showModal()
+  }
+
   const comps = {
     [ModalState.AddAccount] : <AddAccount completeOperation={completeOperation} />,
-    [ModalState.SendMoney]: <SendMoney accounts={accounts} completeOperation={completeOperation} /> 
+    [ModalState.SendMoney]: <SendMoney accounts={accounts} completeOperation={completeOperation} />,
+    [ModalState.AddMoney]: <AddMoney accounts={accounts} completeOperation={completeOperation} /> 
   }
 
   return (
@@ -77,7 +85,7 @@ const Accounts = () => {
       </div>
 
       <div className="op-button">
-        <button>Add Money</button>
+        <button onClick={addMoney}>Add Money</button>
         <button onClick={sendMoney}>Send Money</button>
       </div>
 

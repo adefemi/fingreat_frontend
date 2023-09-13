@@ -37,9 +37,7 @@ const SendMoney = ({ completeOperation, accounts }: SendMoneyType) => {
 
     if (res.data) {
       toast("Transfer successful", { type: "success" });
-      setTimeout(() => {
-        completeOperation();
-      }, 2000);
+      completeOperation()
     }
   };
 

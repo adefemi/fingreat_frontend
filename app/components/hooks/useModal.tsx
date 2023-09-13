@@ -1,35 +1,29 @@
-import { useContext, useRef } from "react";
+import { useRef } from "react";
 import { MdOutlineClose } from "react-icons/md";
-import { ActionTypes, store } from "../StoreProvider";
-import { ToastContainer } from "react-toastify";
 
 export const useModal = (canClose = true) => {
-  const modalRef = useRef<any>();
-  const {dispatch, state:{modalState}} = useContext(store)
+  const modalRef = useRef<HTMLDivElement | null>(null);
 
   const showModal = () => {
-    dispatch({type:ActionTypes.SetModalState, payload:true})
-    modalRef.current.showModal();
+    modalRef.current?.classList.add("show");
   };
 
   const closeModal = () => {
-    dispatch({type:ActionTypes.SetModalState, payload:false})
-    modalRef.current.close();
+    modalRef.current?.classList.remove("show");
   };
 
   const getModalContent = (content: React.ReactNode) => {
     return (
-      <dialog ref={modalRef} className="modalDialog">
-        <div className="body">{content}</div>
-        {canClose && (
-          <div className="close">
-            <MdOutlineClose onClick={closeModal} />
-          </div>
-        )}
-        {
-          modalState && <ToastContainer />
-        }
-      </dialog>
+      <div ref={modalRef} className="modalDialog">
+        <div className="body">
+          {content}
+          {canClose && (
+            <div className="close">
+              <MdOutlineClose onClick={closeModal} />
+            </div>
+          )}
+        </div>
+      </div>
     );
   };
 

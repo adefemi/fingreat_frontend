@@ -5,12 +5,10 @@ import { UserType } from "./hocs/withAuth";
 
 interface StoreProps {
   activeUser: UserType | null;
-  modalState: boolean
 }
 
 const initialState: StoreProps = {
   activeUser: null,
-  modalState: false
 };
 
 export const store = createContext<{
@@ -26,9 +24,6 @@ export enum ActionTypes {
 type ActionType = {
   type: ActionTypes.UpdateUser;
   payload: UserType | null;
-} | {
-  type: ActionTypes.SetModalState;
-  payload: boolean;
 }
 
 const reducer = (state: StoreProps, action: ActionType): StoreProps => {
@@ -37,13 +32,6 @@ const reducer = (state: StoreProps, action: ActionType): StoreProps => {
       ...state,
       activeUser: action.payload,
     };
-  }
-
-  if(action.type === ActionTypes.SetModalState){
-    return {
-      ...state,
-      modalState: action.payload
-    }
   }
 
   return state;

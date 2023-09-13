@@ -28,9 +28,7 @@ const AddAccount = ({completeOperation}: {completeOperation: () => void}) => {
     if(res.data){
       toast("Account created successfully", {type: "success"})
       dispatch({type: ActionTypes.UpdateUser, payload: res.data})
-      setTimeout(() => {
-        completeOperation()
-      }, 2000)
+      completeOperation()
     }
   }
 
