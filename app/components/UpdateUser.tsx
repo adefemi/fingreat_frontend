@@ -1,14 +1,15 @@
-import axiosHandler from "@/utils/axiosHandler";
-import { FormEvent, useContext, useEffect, useRef, useState } from "react";
+import { FormEvent, useContext, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import { UserType } from "./hocs/withAuth";
 import { userUrl } from "@/utils/network";
 import { ActionTypes, store } from "./StoreProvider";
+import useAxiosHandler from "@/utils/axiosHandler";
 
 const UpdateUser = ({closeModal}: {closeModal: () => void}) => { 
   const [loading, setLoading] = useState(false)
   const form = useRef<HTMLFormElement>(null)
   const {dispatch} = useContext(store)
+  const {axiosHandler} = useAxiosHandler()
 
   const onSubmit = async (e:FormEvent<HTMLFormElement>) => {
     e.preventDefault();

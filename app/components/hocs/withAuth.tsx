@@ -13,7 +13,6 @@ export interface UserType {
     username: string;
   }
 
- 
 
 const withAuth = <T extends Object>(WrapperComponent: React.ComponentType<T>) => {
     const WithAuth = (props:T) => {
