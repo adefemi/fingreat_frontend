@@ -28,9 +28,7 @@ const AddAccount = ({completeOperation}: {completeOperation: () => void}) => {
     if(res.data){
       toast("Account created successfully", {type: "success"})
       dispatch({type: ActionTypes.UpdateUser, payload: res.data})
-      setTimeout(() => {
-        completeOperation()
-      }, 2000)
+      completeOperation()
     }
   }
 
@@ -47,7 +45,6 @@ const AddAccount = ({completeOperation}: {completeOperation: () => void}) => {
               <option value="">Choose currency</option>
               <option value="NGN">NGN</option>
               <option value="USD">USD</option>
-              <option value="GBP">GBP</option>
             </select>
           </div>
         </div>

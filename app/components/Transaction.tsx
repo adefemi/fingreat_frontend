@@ -1,7 +1,13 @@
-const Transaction = () => {
-    return <div>
-        Transaction
-    </div>
-}
+import TransactionTable from "./common/MyTable";
 
-export default Transaction
+const Transaction = () => {
+  return (
+    <div>
+        <br /><br />
+      <h2>Transaction History</h2>
+      <TransactionTable body={[]} />
+    </div>
+  );
+};
+
+export default Transaction;

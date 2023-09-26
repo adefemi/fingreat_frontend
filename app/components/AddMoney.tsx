@@ -1,34 +1,40 @@
-
-import { FormEvent, useContext, useRef, useState } from "react";
+import { FormEvent, useContext, useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import { accountUrl } from "@/utils/network";
 import { store } from "./StoreProvider";
 import { AccountType } from "./Accounts";
 import useAxiosHandler from "@/utils/axiosHandler";
+import usePaystack, { Currency, MyPaystackProps } from "./hooks/usePaystack";
 
-interface SendMoneyType {
+interface AddMoneyType {
   completeOperation: () => void;
   accounts: AccountType[];
 }
 
-const SendMoney = ({ completeOperation, accounts }: SendMoneyType) => {
+const AddMoney = ({ completeOperation, accounts }: AddMoneyType) => {
   const [loading, setLoading] = useState(false);
   const form = useRef<HTMLFormElement>(null);
-  const { dispatch } = useContext(store);
-  const {axiosHandler} = useAxiosHandler()
+  const { axiosHandler } = useAxiosHandler();
+  const [data, setData] = useState<MyPaystackProps>({
+    amount: 0,
+    currency: "NGN",
+  });
+  const { initTransaction } = usePaystack({
+    amount: data.amount,
+    currency: data.currency,
+  });
 
-  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setLoading(true);
-    let arg = {
-      from_account_id: parseInt(form.current?.from_account_id.value),
+  const onComplete = async (response: any) => {
+    const arg = {
+      reference: response.reference,
+      status: response.status,
       to_account_id: parseInt(form.current?.to_account_id.value),
-      amount: parseFloat(form.current?.amount.value),
+      amount: data.amount,
     };
 
     const res = await axiosHandler({
       method: "POST",
-      url: accountUrl.transfer,
+      url: accountUrl.addMoney,
       isAuthorized: true,
       data: arg,
     });
@@ -36,9 +42,30 @@ const SendMoney = ({ completeOperation, accounts }: SendMoneyType) => {
     setLoading(false);
 
     if (res.data) {
-      toast("Transfer successful", { type: "success" });
+      form.current?.reset()
+      toast("Transaction successful", { type: "success" });
       completeOperation();
     }
+  };
+
+  useEffect(() => {
+    if(data.amount > 0){
+      const tmp:any = (res:any) => {
+        onComplete(res)
+      }
+      initTransaction(tmp, () => {setLoading(false)})
+    }
+  }, [data])
+
+  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setLoading(true);
+
+    const amount = parseFloat(form.current?.amount.value);
+    const currency = accounts.find(
+      (account) => account.id.toString() === form.current?.to_account_id.value
+    )?.currency as unknown as Currency;
+    setData({amount, currency})
   };
 
   return (
@@ -49,8 +76,8 @@ const SendMoney = ({ completeOperation, accounts }: SendMoneyType) => {
       <form ref={form} onSubmit={onSubmit}>
         <div className="modalBody userUpdate">
           <div className="formGroup">
-            <label htmlFor="Username">From Account</label>
-            <select name="from_account_id" required>
+            <label htmlFor="Username">To Account</label>
+            <select name="to_account_id" required>
               <option value="">Select Account</option>
               {accounts.map((account, index) => (
                 <option key={index} value={account.id}>{`${
@@ -60,22 +87,13 @@ const SendMoney = ({ completeOperation, accounts }: SendMoneyType) => {
             </select>
           </div>
           <div className="formGroup">
-            <label htmlFor="Username">To Account</label>
-            <input
-              type="number"
-              name="to_account_id"
-              placeholder="Specify the account to send to"
-              required
-            />
-          </div>
-          <div className="formGroup">
             <label htmlFor="Username">Amount</label>
             <input name="amount" type="number" required />
           </div>
         </div>
         <div className="modalFooter">
           <button type="submit" disabled={loading}>
-            Submit{loading && "..."}
+            Submit{loading && "ting..."}
           </button>
         </div>
       </form>
@@ -83,4 +101,4 @@ const SendMoney = ({ completeOperation, accounts }: SendMoneyType) => {
   );
 };
 
-export default SendMoney;
+export default AddMoney;

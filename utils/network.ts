@@ -13,5 +13,6 @@ export const userUrl = {
 export const accountUrl = {
     list: baseUrl + "/account",
     add: baseUrl + "/account" + "/create",
-    transfer: baseUrl + "/account" + "/transfer"
+    transfer: baseUrl + "/account" + "/transfer",
+    addMoney: baseUrl + "/account" + "/add-money"
 }

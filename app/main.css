@@ -312,6 +312,10 @@ h1.title{
             }
         }
     }
+
+    & .addAccount{
+        min-height: 100px;
+    }
 }
 
 .accountCard{
@@ -361,15 +365,19 @@ h1.title{
 }
 
 .modalDialog{
-    padding: 0;
-    border: none;
-    background-color: white;
-    box-shadow: 0px 4px 20px 0 rgba(0,0,0, 0.1);
-    width: 100%;
-    max-width: 400px;
-    overflow: hidden;
-    margin: auto;
-    border-radius: 10px;
+    position: relative;
+    display: none;
+
+    & .body{
+        position: relative;
+        background-color: white;
+        box-shadow: 0px 4px 20px 0 rgba(0,0,0, 0.1);
+        width: 100%;
+        max-width: 400px;
+        overflow: hidden;
+        margin: auto;
+        border-radius: 10px;
+    }
   
     & .close{
       position: absolute;
@@ -418,10 +426,74 @@ h1.title{
         padding: 0 20px;
       }
     }
+
+    &::before{
+        backdrop-filter: blur(3px);
+        z-index: 0;
+        position: fixed;
+        content: "";
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+      }
+
+      &.show{
+        display: block;
+      }
   }
   
-  dialog::backdrop{
-    backdrop-filter: blur(3px);
-    z-index: 0;
-    position: fixed;
+  .myTable{
+    margin-top: 20px;
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+
+    .content{
+        margin-top: unset;
+        
+        & section{
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            color: #7a7a7a;
+            align-items: center;
+            padding: 15px;
+
+            &:last-child{
+                margin-bottom: 0;
+            }
+
+            &:nth-child(odd){
+                background-color: #f3f3f5;
+            }
+
+            & .top{
+                margin-bottom: 5px;
+                font-weight: 600;
+                color: #131418;
+            }
+
+            & .credit{
+                color: #3fb657;
+            }
+        }
+    }
+
+    .heading{
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        color: #838383;
+        margin-bottom: 20px;
+        padding: 0 15px;
+    }
+  }
+
+  .badge{
+    padding: 5px 20px;
+    background-color: #dfdfdf;
+    display: inline-block;
+    border-radius: 20px;
+    font-weight: 300;
+    color: black;
+    font-size: 12px;
   }
